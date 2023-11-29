@@ -1,4 +1,4 @@
-import RegisterForm from "../../components/register-form/RegisterForm";
+import { RegisterForm } from "../../components/register-form/RegisterForm";
 import { useLoadingAndError } from "../../hooks/useLoadingAndError";
 import ErrorMessage from "../../components/error-message/ErrorMessage";
 import Loading from "../../components/loading/Loading";
