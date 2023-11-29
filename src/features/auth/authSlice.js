@@ -1,5 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { register, refreshUser, logOut, login } from './operations';
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  register,
+  refreshUser,
+  logOut,
+  login,
+  editUserProfile,
+} from "./operations";
 
 const initialState = {
   user: { name: null, email: null },
@@ -9,12 +15,24 @@ const initialState = {
   isLoading: false,
   isError: false,
   errorMessage: null,
+  isEditProfileModalOpen: false,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    changeTheme: (state, action) => {
+      state.theme = action.payload;
+    },
+    openEditProfileModal: (state) => {
+      state.isEditProfileModalOpen = true;
+    },
+
+    closeEditProfileModal: (state) => {
+      state.isEditProfileModalOpen = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
@@ -28,7 +46,7 @@ const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         const errorMessage = action.payload;
-        if (errorMessage === 'Email in use') {
+        if (errorMessage === "Email in use") {
           state.errorMessage = errorMessage;
         } else {
           state.isError = true;
@@ -75,9 +93,26 @@ const authSlice = createSlice({
         state.isError = true;
         state.errorMessage = action.payload;
         state.isLoading = false;
+      })
+      .addCase(editUserProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editUserProfile.fulfilled, (state, action) => {
+        const { user } = action.payload;
+        state.user.name = user.name;
+        state.user.email = user.email;
+        state.user.image = user.image;
+        state.isLoading = false;
+      })
+      .addCase(editUserProfile.rejected, (state, action) => {
+        state.isError = true;
+        state.errorMessage = action.payload;
+        state.isLoading = false;
       });
   },
 });
 
 export const authReducer = authSlice.reducer;
+export const { changeTheme, openEditProfileModal, closeEditProfileModal } =
+  authSlice.actions;
 // export const {} = authSlice.actions;
