@@ -1,7 +1,6 @@
 import React from "react";
-import { useFormik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { Link as RouterLink } from "react-router-dom";
+import { useFormik } from "formik";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email!").required("Email is required!"),
@@ -14,61 +13,61 @@ const LoginSchema = Yup.object().shape({
     .required("Password is required!"),
 });
 
-export const LogInForm = () => {
+function LogInForm() {
   const formik = useFormik({
     initialValues: {
+      name: "",
       email: "",
       password: "",
     },
+    validationSchema: LoginSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      console.log(values);
     },
   });
+
   return (
-    <div>
-      <div>
-        <RouterLink component={RouterLink} to="/register" className="">
-          Registration
-        </RouterLink>
-        <RouterLink component={RouterLink} to="/login" className="">
-          Log in
-        </RouterLink>
-      </div>
-      <div>
-        <formik
-          initialValues={{
-            email: "",
-            password: "",
-          }}
-          validationSchema={LoginSchema}
-        >
-          {({ errors, touched }) => (
-            <Form onSubmit={formik.handleSubmit}>
-              <Field
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                id="email"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                onBlur={formik.handleBlur}
-              />
-              {touched.email && errors.email && <div>{errors.email}</div>}
-              <Field
-                name="password"
-                type="password"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {touched.password && errors.password && (
-                <div>{errors.password} </div>
-              )}
-              <button type="submit">Log In</button>
-            </Form>
-          )}
-        </formik>
-      </div>
+    <div className="wrapper">
+      <input
+        id="name"
+        type="text"
+        value={formik.values.name}
+        placeholder="Enter your name!"
+        onChange={formik.handleChange("name")}
+        onBlur={formik.handleBlur("name")}
+      />
+      {formik.touched.name && (
+        <span className="error">{formik.errors.name}</span>
+      )}
+
+      <input
+        id="email"
+        type="email"
+        value={formik.values.email}
+        placeholder="Enter your email!"
+        onChange={formik.handleChange("email")}
+        onBlur={formik.handleBlur("email")}
+      />
+      {formik.touched.email && (
+        <span className="error">{formik.errors.email}</span>
+      )}
+      <input
+        id="password"
+        type="password"
+        value={formik.values.password}
+        placeholder="Enter your password!"
+        onChange={formik.handleChange("password")}
+        onBlur={formik.handleBlur("password")}
+      />
+      {formik.touched.password && (
+        <span className="error">{formik.errors.password}</span>
+      )}
+
+      <button type="submit" onClick={formik.handleSubmit}>
+        Log in
+      </button>
     </div>
   );
-};
+}
+
+export default LogInForm;

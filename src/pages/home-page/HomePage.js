@@ -3,7 +3,7 @@ import "./HomePage.css";
 
 const HomePage = () => {
   return (
-    <div class="first-page-cont">
+    <div className="first-page-cont">
       <div className="header-icon-cont">
         <svg
           width="48px"

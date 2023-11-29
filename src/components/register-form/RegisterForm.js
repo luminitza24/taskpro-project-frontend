@@ -1,13 +1,8 @@
-import React from "react";
-import { useFormik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { Link as RouterLink } from "react-router-dom";
+import { useFormik } from "formik";
 
 const RegisterSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(4, "Must be at least 4 characters! ")
-    .max(20, "Must be 20 characters or less!")
-    .required("Required"),
+  name: Yup.string().required("Name is required!").label("name"),
   email: Yup.string().email("Invalid email!").required("Email is required!"),
   password: Yup.string()
     .min(8, { length: "Password is too short!" })
@@ -18,82 +13,56 @@ const RegisterSchema = Yup.object().shape({
     .required("Password is required!"),
 });
 
-export const RegisterForm = () => {
+function RegisterForm() {
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
       password: "",
     },
+    validationSchema: RegisterSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      console.log(values);
     },
   });
+
   return (
-    <div>
-      <div>
-        <RouterLink
-          component={RouterLink}
-          to="/register"
-          className="text-decoration-none text-custom"
-        >
-          Registration
-        </RouterLink>
-        <RouterLink
-          component={RouterLink}
-          to="/login"
-          className="text-decoration-none text-custom"
-        >
-          Log in
-        </RouterLink>
-      </div>
-      <div>
-        <formik
-          initialValues={{
-            name: "",
-            email: "",
-            password: "",
-          }}
-          validationSchema={RegisterSchema}
-        >
-          {({ errors, touched }) => (
-            <Form onSubmit={formik.handleSubmit}>
-              <Field
-                name="name"
-                type="text"
-                placeholder="Enter your name"
-                id="name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
-              />
-              {touched.name && errors.name && <div>{errors.name}</div>}
-              <Field
-                name="email"
-                placeholder="Enter your email"
-                id="email"
-                type="email"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                onBlur={formik.handleBlur}
-              />
-              {touched.email && errors.email && <div>{errors.email}</div>}
-              <Field
-                name="password"
-                type="password"
-                placeholder="Create a password"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {touched.password && errors.password && (
-                <div>{errors.password} </div>
-              )}
-              <button type="submit">Register Now </button>
-            </Form>
-          )}
-        </formik>
-      </div>
+    <div className="">
+      <input
+        id="name"
+        type="name"
+        value={formik.values.name}
+        placeholder="Please enter your name!"
+        onChange={formik.handleChange("name")}
+        onBlur={formik.handleBlur("name")}
+      />
+      {formik.touched.name && <span className="">{formik.errors.name}</span>}
+      <input
+        id="email"
+        type="email"
+        value={formik.values.email}
+        placeholder="Please enter your email!"
+        onChange={formik.handleChange("email")}
+        onBlur={formik.handleBlur("email")}
+      />
+      {formik.touched.email && <span className="">{formik.errors.email}</span>}
+      <input
+        id="password"
+        type="password"
+        value={formik.values.password}
+        placeholder="Create your password!"
+        onChange={formik.handleChange("password")}
+        onBlur={formik.handleBlur("password")}
+      />
+      {formik.touched.password && (
+        <span className="">{formik.errors.password}</span>
+      )}
+
+      <button type="submit" onClick={formik.handleSubmit}>
+        Register Now
+      </button>
     </div>
   );
-};
+}
+
+export default RegisterForm;
