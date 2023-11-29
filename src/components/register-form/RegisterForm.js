@@ -61,7 +61,7 @@ export const RegisterForm = () => {
               <Field
                 name="name"
                 type="text"
-                placeholder="Enter youre name"
+                placeholder="Enter your name"
                 id="name"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -70,7 +70,7 @@ export const RegisterForm = () => {
               {touched.name && errors.name && <div>{errors.name}</div>}
               <Field
                 name="email"
-                placeholder="Enter youre email"
+                placeholder="Enter your email"
                 id="email"
                 type="email"
                 onChange={formik.handleChange}
@@ -81,6 +81,7 @@ export const RegisterForm = () => {
               <Field
                 name="password"
                 type="password"
+                placeholder="Create a password"
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}

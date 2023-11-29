@@ -47,7 +47,7 @@ export const LogInForm = () => {
               <Field
                 name="email"
                 type="email"
-                placeholder="Enter youre email"
+                placeholder="Enter your email"
                 id="email"
                 onChange={formik.handleChange}
                 value={formik.values.email}
